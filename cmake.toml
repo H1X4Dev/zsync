@@ -1,0 +1,28 @@
+[cmake]
+version = "3.29"
+cmkr-include = "cmake/cmkr.cmake"
+
+[project]
+name = "zsync"
+version = "1.0.0"
+description = "zsync - rsync over http"
+msvc-runtime = "static"
+languages = ["C", "CXX"]
+include-before = ["cmake/pre-configure.cmake"]
+
+[target.compile-options]
+type = "interface"
+compile-features = ["cxx_std_23"]
+compile-definitions = ["_SILENCE_ALL_MS_EXT_DEPRECATION_WARNINGS"]
+msvc.compile-options = ["/W4", "/GR-"]
+clang-any.compile-options = ["-fno-rtti"]
+gcc.compile-options = ["-fno-rtti"]
+
+[target.zsync]
+type = "executable"
+sources = ["src/**.c", "src/**.h", "src/**.cpp", "src/**.hpp"]
+
+[[install]]
+targets = ["zsync"]
+destination = "bin"
+configs = ["Release"]

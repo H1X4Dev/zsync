@@ -1,4 +1,3 @@
-
 /*
  *   zsync - client side rsync over http
  *   Copyright (C) 2004,2005,2007,2009 Colin Phipps <cph@moria.org.uk>
@@ -26,15 +25,17 @@
 #include <sys/stat.h>
 
 #ifdef WITH_DMALLOC
-# include <dmalloc.h>
+    #include <dmalloc.h>
 #endif
 
 /* fputlong(filehandle, long)
  * Writes a 32bit int as raw bytes in little-endian to the given filehandle.
  * Returns 0 if successful; otherwise ferror(filehandle) to see the error */
-static int fputlong(FILE * f, unsigned long x) {
+static int fputlong(FILE* f, unsigned long x)
+{
     int n;
-    for (n = 0; n < 4; n++) {
+    for (n = 0; n < 4; n++)
+    {
         if (fputc((int)(x & 0xff), f) == EOF)
             return -1;
         x >>= 8;
@@ -44,7 +45,8 @@ static int fputlong(FILE * f, unsigned long x) {
 
 /* time = get_mtime(filehandle)
  * Get the mtime of a file from an open filehandle; or 0 if unavailable */
-time_t get_mtime(FILE * f) {
+time_t get_mtime(FILE* f)
+{
     struct stat s;
 
     if (fstat(fileno(f), &s) == 0)
@@ -68,51 +70,56 @@ time_t get_mtime(FILE * f) {
  * using) and a Z_PARTIAL_FLUSH at the end of each one, so zlib breaks the
  * compression runs at exactly the places zsync will start/stop retrieving data.
  */
-FILE *optimal_gzip(FILE * ffin, const char *fout, size_t blocksize) {
+FILE* optimal_gzip(FILE* ffin, const char* fout, size_t blocksize)
+{
     time_t mtime = get_mtime(ffin);
 
     /* Open output file (for writing, but also reading so we can return the
      * handle for reading by the caller. */
-    FILE *ffout = fopen(fout, "wb+");
-    if (!ffout) {
+    FILE* ffout = fopen(fout, "wb+");
+    if (!ffout)
+    {
         perror("open");
         return NULL;
     }
 
     /* Write gzip header */
-    if (fwrite("\x1f\x8b\x08\x00", 4, 1, ffout) != 1) {
+    if (fwrite("\x1f\x8b\x08\x00", 4, 1, ffout) != 1)
+    {
         perror("write");
         return NULL;
     }
-    if (fputlong(ffout, mtime) == -1) {
+    if (fputlong(ffout, mtime) == -1)
+    {
         perror("write");
         return NULL;
     }
-    if (fwrite("\x00\x03", 2, 1, ffout) != 1) {
+    if (fwrite("\x00\x03", 2, 1, ffout) != 1)
+    {
         perror("write");
         return NULL;
     }
 
-    {   /* Now write compressed content */
-        z_stream zs;
-        unsigned char *inbuf = malloc(blocksize);
-        unsigned char *outbuf = malloc(blocksize + 500);
-        int err, r;
-        unsigned long crc = crc32(0L, Z_NULL, 0);
+    { /* Now write compressed content */
+        z_stream       zs;
+        unsigned char* inbuf  = malloc(blocksize);
+        unsigned char* outbuf = malloc(blocksize + 500);
+        int            err, r;
+        unsigned long  crc = crc32(0L, Z_NULL, 0);
 
         /* Set up zlib object */
-        zs.zalloc = Z_NULL;
-        zs.zfree = Z_NULL;
-        zs.opaque = NULL;
-        zs.total_in = 0;
+        zs.zalloc    = Z_NULL;
+        zs.zfree     = Z_NULL;
+        zs.opaque    = NULL;
+        zs.total_in  = 0;
         zs.total_out = 0;
 
         /* windowBits is passed < 0 to suppress zlib header */
-        err = deflateInit2(&zs, 9,
-                           Z_DEFLATED, -MAX_WBITS, 8, Z_DEFAULT_STRATEGY);
+        err = deflateInit2(&zs, 9, Z_DEFLATED, -MAX_WBITS, 8, Z_DEFAULT_STRATEGY);
 
         /* Until end of file or error */
-        for (r = 1; r > 0;) {
+        for (r = 1; r > 0;)
+        {
             r = fread(inbuf, 1, blocksize, ffin);
             if (r < 0)
                 break;
@@ -121,26 +128,27 @@ FILE *optimal_gzip(FILE * ffin, const char *fout, size_t blocksize) {
             crc = crc32(crc, inbuf, r);
 
             /* Set up compressor for this block */
-            zs.next_in = inbuf;
-            zs.avail_in = r;
-            zs.next_out = outbuf;
+            zs.next_in   = inbuf;
+            zs.avail_in  = r;
+            zs.next_out  = outbuf;
             zs.avail_out = blocksize + 500;
 
-            /* Compress with partial flush at the end of this block 
+            /* Compress with partial flush at the end of this block
              * unless EOF, in which case finish */
             err = deflate(&zs, r ? Z_PARTIAL_FLUSH : Z_FINISH);
-            switch (err) {
+            switch (err)
+            {
             case Z_STREAM_END:
-            case Z_OK:
-                {
-                    size_t w = zs.next_out - outbuf;
+            case Z_OK: {
+                size_t w = zs.next_out - outbuf;
 
-                    if (w != fwrite(outbuf, 1, w, ffout)) {
-                        perror("write");
-                        r = -1;
-                    }
+                if (w != fwrite(outbuf, 1, w, ffout))
+                {
+                    perror("write");
+                    r = -1;
                 }
-                break;
+            }
+            break;
             default:
                 fprintf(stderr, "zlib error: %s (%d)\n", zs.msg, err);
                 r = -1;
@@ -148,11 +156,13 @@ FILE *optimal_gzip(FILE * ffin, const char *fout, size_t blocksize) {
         }
 
         /* Write gzip footer */
-        if (fputlong(ffout, crc) == -1) {
+        if (fputlong(ffout, crc) == -1)
+        {
             perror("write");
             return NULL;
         }
-        if (fputlong(ffout, zs.total_in) == -1) {
+        if (fputlong(ffout, zs.total_in) == -1)
+        {
             perror("write");
             return NULL;
         }
@@ -161,7 +171,8 @@ FILE *optimal_gzip(FILE * ffin, const char *fout, size_t blocksize) {
         fflush(ffout);
         free(outbuf);
         free(inbuf);
-        if (fclose(ffin) != 0 || r != 0) {
+        if (fclose(ffin) != 0 || r != 0)
+        {
             fclose(ffout);
             return NULL;
         }

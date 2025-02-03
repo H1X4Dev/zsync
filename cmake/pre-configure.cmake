@@ -1,0 +1,5 @@
+if (POLICY CMP0167)
+    cmake_policy(SET CMP0167 OLD)
+endif()
+
+SET(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/modules/")

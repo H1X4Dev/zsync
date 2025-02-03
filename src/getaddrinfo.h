@@ -1,3 +1,4 @@
+#pragma once
 /*
  * Copyright (c) 2001, 02  Motoyuki Kasahara
  *
@@ -26,9 +27,6 @@
  * SUCH DAMAGE.
  */
 
-#ifndef GETADDRINFO_H
-#define GETADDRINFO_H
-
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netdb.h>
@@ -39,88 +37,88 @@
  * <netdb.h> might defines some of them.
  */
 #ifdef EAI_ADDRFAMILY
-#undef EAI_ADDRFAMILY
+    #undef EAI_ADDRFAMILY
 #endif
 #ifdef EAI_AGAIN
-#undef EAI_AGAIN
+    #undef EAI_AGAIN
 #endif
 #ifdef EAI_BADFLAGS
-#undef EAI_BADFLAGS
+    #undef EAI_BADFLAGS
 #endif
 #ifdef EAI_FAIL
-#undef EAI_FAIL
+    #undef EAI_FAIL
 #endif
 #ifdef EAI_FAMILY
-#undef EAI_FAMILY
+    #undef EAI_FAMILY
 #endif
 #ifdef EAI_MEMORY
-#undef EAI_MEMORY
+    #undef EAI_MEMORY
 #endif
 #ifdef EAI_NONAME
-#undef EAI_NONAME
+    #undef EAI_NONAME
 #endif
 #ifdef EAI_OVERFLOW
-#undef EAI_OVERFLOW
+    #undef EAI_OVERFLOW
 #endif
 #ifdef EAI_SERVICE
-#undef EAI_SERVICE
+    #undef EAI_SERVICE
 #endif
 #ifdef EAI_SOCKTYPE
-#undef EAI_SOCKTYPE
+    #undef EAI_SOCKTYPE
 #endif
 #ifdef EAI_SYSTEM
-#undef EAI_SYSTEM
+    #undef EAI_SYSTEM
 #endif
 
 #ifdef AI_PASSIVE
-#undef AI_PASSIVE
+    #undef AI_PASSIVE
 #endif
 #ifdef AI_CANONNAME
-#undef AI_CANONNAME
+    #undef AI_CANONNAME
 #endif
 #ifdef AI_NUMERICHOST
-#undef AI_NUMERICHOST
+    #undef AI_NUMERICHOST
 #endif
 #ifdef AI_NUMERICSERV
-#undef AI_NUMERICSERV
+    #undef AI_NUMERICSERV
 #endif
 #ifdef AI_V4MAPPED
-#undef AI_V4MAPPED
+    #undef AI_V4MAPPED
 #endif
 #ifdef AI_ALL
-#undef AI_ALL
+    #undef AI_ALL
 #endif
 #ifdef AI_ADDRCONFIG
-#undef AI_ADDRCONFIG
+    #undef AI_ADDRCONFIG
 #endif
 #ifdef AI_DEFAULT
-#undef AI_DEFAULT
+    #undef AI_DEFAULT
 #endif
 
 #ifdef NI_NOFQDN
-#undef NI_NOFQDN
+    #undef NI_NOFQDN
 #endif
 #ifdef NI_NUMERICHOST
-#undef NI_NUMERICHOST
+    #undef NI_NUMERICHOST
 #endif
 #ifdef NI_NAMEREQD
-#undef NI_NAMEREQD
+    #undef NI_NAMEREQD
 #endif
 #ifdef NI_NUMERICSERV
-#undef NI_NUMERICSERV
+    #undef NI_NUMERICSERV
 #endif
 #ifdef NI_NUMERICSCOPE
-#undef NI_NUMERICSCOPE
+    #undef NI_NUMERICSCOPE
 #endif
 
 #ifdef NI_DGRAM
-#undef NI_DGRAM
+    #undef NI_DGRAM
 #endif
 #ifdef NI_MAXHOST
-#undef NI_MAXHOST
+    #undef NI_MAXHOST
 #endif
 #ifdef NI_MAXSERV
-#undef NI_MAXSERV
+    #undef NI_MAXSERV
 #endif
 
 /*
@@ -128,96 +126,93 @@
  * <netdb.h> might declares all or some of them.
  */
 #if defined(HAVE_GETADDRINFO) || defined(HAVE_GETNAMEINFO)
-#define addrinfo my_addrinfo
-#define gai_strerror my_gai_strerror
-#define freeaddrinfo my_freeaddrinfo
-#define getaddrinfo my_getaddrinfo
-#define getnameinfo my_getnameinfo
+    #define addrinfo     my_addrinfo
+    #define gai_strerror my_gai_strerror
+    #define freeaddrinfo my_freeaddrinfo
+    #define getaddrinfo  my_getaddrinfo
+    #define getnameinfo  my_getnameinfo
 #endif
 
 /********************************************************************/
 /*
  * Error codes.
  */
-#define EAI_ADDRFAMILY	1
-#define EAI_AGAIN	2
-#define EAI_BADFLAGS	3
-#define EAI_FAIL	4
-#define EAI_FAMILY	5
-#define EAI_MEMORY	6
-#define EAI_NONAME	7
-#define EAI_OVERFLOW	8
-#define EAI_SERVICE	9
-#define EAI_SOCKTYPE	10
-#define EAI_SYSTEM	11
+#define EAI_ADDRFAMILY 1
+#define EAI_AGAIN      2
+#define EAI_BADFLAGS   3
+#define EAI_FAIL       4
+#define EAI_FAMILY     5
+#define EAI_MEMORY     6
+#define EAI_NONAME     7
+#define EAI_OVERFLOW   8
+#define EAI_SERVICE    9
+#define EAI_SOCKTYPE   10
+#define EAI_SYSTEM     11
 
 /*
  * Flags for getaddrinfo().
  */
-#define AI_ADDRCONFIG	0x0001
-#define AI_ALL		0x0002
-#define AI_CANONNAME	0x0004
-#define AI_NUMERICHOST	0x0008
-#define AI_NUMERICSERV	0x0010
-#define AI_PASSIVE	0x0020
-#define AI_V4MAPPED	0x0040
-#define AI_DEFAULT	(AI_V4MAPPED | AI_ADDRCONFIG)
+#define AI_ADDRCONFIG  0x0001
+#define AI_ALL         0x0002
+#define AI_CANONNAME   0x0004
+#define AI_NUMERICHOST 0x0008
+#define AI_NUMERICSERV 0x0010
+#define AI_PASSIVE     0x0020
+#define AI_V4MAPPED    0x0040
+#define AI_DEFAULT     (AI_V4MAPPED | AI_ADDRCONFIG)
 
 /*
  * Flags for getnameinfo().
  */
-#define NI_DGRAM	0x0001
-#define NI_NAMEREQD	0x0002
-#define NI_NOFQDN	0x0004
-#define NI_NUMERICHOST	0x0008
-#define NI_NUMERICSCOPE	0x0010
-#define NI_NUMERICSERV	0x0020
+#define NI_DGRAM        0x0001
+#define NI_NAMEREQD     0x0002
+#define NI_NOFQDN       0x0004
+#define NI_NUMERICHOST  0x0008
+#define NI_NUMERICSCOPE 0x0010
+#define NI_NUMERICSERV  0x0020
 
 /*
  * Maximum length of FQDN and servie name for getnameinfo().
  */
-#define NI_MAXHOST	1025
-#define NI_MAXSERV	32
+#define NI_MAXHOST 1025
+#define NI_MAXSERV 32
 
 /*
  * Address families and Protocol families.
  */
 #ifndef AF_UNSPEC
-#define AF_UNSPEC AF_INET
+    #define AF_UNSPEC AF_INET
 #endif
 #ifndef PF_UNSPEC
-#define PF_UNSPEC PF_INET
+    #define PF_UNSPEC PF_INET
 #endif
 
 /*
  * struct addrinfo.
  */
-struct addrinfo {
-    int ai_flags;
-    int ai_family;
-    int ai_socktype;
-    int ai_protocol;
-    socklen_t ai_addrlen;
-    char *ai_canonname;
-    struct sockaddr *ai_addr;
-    struct addrinfo *ai_next;
+struct addrinfo
+{
+    int              ai_flags;
+    int              ai_family;
+    int              ai_socktype;
+    int              ai_protocol;
+    socklen_t        ai_addrlen;
+    char*            ai_canonname;
+    struct sockaddr* ai_addr;
+    struct addrinfo* ai_next;
 };
 
 /*
  * Functions.
  */
 #ifdef __STDC__
-const char *gai_strerror(int);
-void freeaddrinfo(struct addrinfo *);
-int getaddrinfo(const char *, const char *, const struct addrinfo *,
-    struct addrinfo **);
-int getnameinfo(const struct sockaddr *, socklen_t, char *, 
-    socklen_t, char *, socklen_t, int);
+const char* gai_strerror(int);
+void        freeaddrinfo(struct addrinfo*);
+int         getaddrinfo(const char*, const char*, const struct addrinfo*, struct addrinfo**);
+int         getnameinfo(const struct sockaddr*, socklen_t, char*, socklen_t, char*, socklen_t, int);
 #else
-const char *gai_strerror();
-void freeaddrinfo();
-int getaddrinfo();
-int getnameinfo();
+const char* gai_strerror();
+void        freeaddrinfo();
+int         getaddrinfo();
+int         getnameinfo();
 #endif
-
-#endif /* not GETADDRINFO_H */

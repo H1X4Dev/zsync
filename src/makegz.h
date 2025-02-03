@@ -1,3 +1,4 @@
+#pragma once
 /*
  *   zsync - client side rsync over http
  *   Copyright (C) 2004,2005,2007,2009 Colin Phipps <cph@moria.org.uk>
