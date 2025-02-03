@@ -36,20 +36,17 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/types.h>
-#include <unistd.h>
 #include <string.h>
 #include <ctype.h>
 #include <time.h>
 
-#include <arpa/inet.h>
 
 #ifdef WITH_DMALLOC
     #include <dmalloc.h>
 #endif
 
-#include "zlib/zlib.h"
-
-#include "librcksum/rcksum.h"
+#include "../zlib/zlib.h"
+#include "../librcksum/rcksum.h"
 #include "zsync.h"
 #include "sha1.h"
 #include "zmap.h"

@@ -22,7 +22,6 @@
 
 #include <stdlib.h>
 #include <string.h>
-#include <unistd.h>
 
 #ifdef WITH_DMALLOC
     #include <dmalloc.h>

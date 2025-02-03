@@ -16,7 +16,6 @@
 #include "zsglobal.h"
 
 #include <stdio.h>
-#include <unistd.h>
 #include <stdlib.h>
 
 #include "zlib/zlib.h"

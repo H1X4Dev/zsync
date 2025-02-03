@@ -21,12 +21,12 @@
  */
 
 #include "../zsglobal.h"
+#include "../msc.h"
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/types.h>
-#include <arpa/inet.h>
 #ifdef HAVE_INTTYPES_H
     #include <inttypes.h>
 #endif
@@ -301,7 +301,7 @@ off_t* zmap_to_compressed_ranges(const struct zmap* zm, off_t* byterange, int nr
     return consolidate_byteranges(zbyterange, num);
 }
 
-#include "zlib/zlib.h"
+#include "../zlib/zlib.h"
 /* zmap_search(self, offset)
  * Find this offset in the Z-Map */
 int zmap_search(const struct zmap* zm, long zoffset)
